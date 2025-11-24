@@ -8,7 +8,7 @@
         body { 
             text-align: center; 
             font-family: sans-serif; 
-            background: linear-gradient(135deg, #1c0030 0%, #000000 100%); 
+            background: linear-gradient(135deg, #1c0030 0%, #000000 100%); /* Mor/Siyah Gradient */
             color: #ffffff; 
             padding: 0;
             margin: 0;
@@ -33,7 +33,7 @@
             border-radius: 50%;
             opacity: 0;
             animation: confetti-fall 8s linear infinite;
-            z-index: 9999; /* Konfetilerin en önde olması için */
+            z-index: 9999; 
         }
 
         /* Geri Sayım Kutusu */
@@ -66,42 +66,42 @@
             padding: 30px;
             background: rgba(0, 0, 0, 0.6);
             border-radius: 15px;
-            max-width: 800px; /* Daha geniş bir alan */
+            max-width: 800px; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border: 2px solid #00ffaa;
             z-index: 10;
         }
         #birthday-content h2 {
             color: #00ffaa; 
-            font-size: 3.5em; /* Daha büyük başlık */
+            font-size: 3.5em; 
             margin-bottom: 15px;
             text-shadow: 0 0 15px rgba(0, 255, 170, 0.7);
         }
         #birthday-content p {
-            font-size: 1.6em; /* Daha büyük metin */
+            font-size: 1.6em; 
             color: #ffffff;
             line-height: 1.6;
             margin-bottom: 25px;
         }
         .photo-gallery {
-            display: flex; /* Fotoğrafları yan yana dizer */
-            flex-wrap: wrap; /* Taşarsa alta geçirir */
+            display: flex; 
+            flex-wrap: wrap; 
             justify-content: center;
-            gap: 20px; /* Fotoğraflar arası boşluk */
+            gap: 20px; 
             margin-top: 30px;
         }
         .photo-gallery img {
-            max-width: 220px; /* Fotoğraf boyutu */
+            max-width: 220px; 
             height: auto;
             border-radius: 15px;
-            border: 3px solid #ffcc00; /* Sarı çerçeve */
+            border: 3px solid #ffcc00; 
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease;
         }
         .photo-gallery img:hover {
-            transform: scale(1.05); /* Üzerine gelince büyüme efekti */
+            transform: scale(1.05); 
         }
-
+        
         /* Sayılar için Kutular */
         .time-unit {
             display: inline-block;
@@ -144,15 +144,15 @@
         <img src="foto1.jpg" alt="Anımız 1">
         <img src="foto2.jpg" alt="Anımız 2">
         <img src="foto3.jpg" alt="Anımız 3">
-        </div>
+    </div>
 </div>
 
 <script>
     // **********************************************
-    // HEDEF TARİH: 25 Aralık 2025, 00:00:00 (TSİ)
-    // Ay JavaScript'te 0'dan (Ocak) başlar, 11 (Aralık) olarak yazıldı.
+    // TEST TARİHİ: 24 Kasım 2025, 22:30:00 (TSİ)
+    // Ay JavaScript'te 0'dan (Ocak) başlar, 10 (Kasım) olarak yazıldı.
     // **********************************************
-    const targetDate = new Date(2025, 11, 25, 0, 0, 0).getTime(); 
+    const targetDate = new Date(2025, 10, 24, 22, 30, 0).getTime(); 
 
     const countdownUnits = document.getElementById("countdown-units");
     const birthdayContent = document.getElementById("birthday-content");
@@ -194,12 +194,12 @@
         if (distance < 0) {
             clearInterval(x);
             countdownContainer.style.display = 'none'; // Sayaç kutusunu gizle
-            birthdayContent.style.display = 'block'; // Mesaj kutusunu göster
+            birthdayContent.style.display = 'block'; // Mesaj ve fotoğrafları göster
             document.title = "🎉 İYİ Kİ DOĞDUN! 🎉";
             messageElement.innerHTML = "Sürpriz Açıldı!"; 
             createConfetti(); // Konfeti yağmurunu başlat
             
-            document.body.style.background = '#e91e63'; 
+            document.body.style.background = '#e91e63'; // Arka plan rengini değiştir
         }
     }, 1000);
 </script>
