@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sürpriz Doğum Günü Geri Sayımı! 🎁</title>
+    <title>İYİ Kİ DOĞDUN AŞKIM! 🎉</title>
     <meta charset="UTF-8">
     <style>
         /* Ana Stil */
         body { 
             text-align: center; 
             font-family: sans-serif; 
-            background: linear-gradient(135deg, #1c0030 0%, #000000 100%); /* Mor/Siyah Gradient */
+            background: #e91e63; /* Direkt Doğum Günü Rengi */
             color: #ffffff; 
             padding: 0;
             margin: 0;
@@ -31,37 +31,14 @@
             height: 10px;
             background-color: #ffcc00; 
             border-radius: 50%;
-            opacity: 0;
+            opacity: 1; /* Sayaçsız olduğu için direkt görünür */
             animation: confetti-fall 8s linear infinite;
             z-index: 9999; 
         }
 
-        /* Geri Sayım Kutusu */
-        .countdown-container {
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px); 
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 2px solid #ffcc00;
-            z-index: 10;
-        }
-        
-        /* Başlıklar */
-        h1 {
-            color: #ffcc00; 
-            font-size: 2.5em;
-            margin-bottom: 5px;
-        }
-        #message {
-            font-size: 1.2em;
-            color: #f0f0f0;
-            margin-bottom: 20px;
-        }
-
-        /* Doğum Günü Mesajı ve Fotoğraf Alanı (Sayaç Bitince Görünür Olur) */
+        /* Doğum Günü Mesajı ve Fotoğraf Alanı */
         #birthday-content {
-            display: none; 
+            display: block; /* Sayaçsız olduğu için direkt görünür */
             margin-top: 30px;
             padding: 30px;
             background: rgba(0, 0, 0, 0.6);
@@ -101,39 +78,11 @@
         .photo-gallery img:hover {
             transform: scale(1.05); 
         }
-        
-        /* Sayılar için Kutular */
-        .time-unit {
-            display: inline-block;
-            margin: 0 15px;
-            padding: 10px;
-            background: #2a0050;
-            border-radius: 10px;
-        }
-        .time-value {
-            font-size: 2em;
-            display: block;
-            color: #ffcc00;
-        }
-        .time-label {
-            font-size: 0.8em;
-            color: #f0f0f0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
     </style>
 </head>
-<body>
+<body onload="createConfetti()">
 
 <div id="confetti-area"></div>
-
-<div class="countdown-container">
-    <h1>🎉 Büyük Gün Geliyor! 🎉</h1>
-    <p id="message">Geri Sayım Başladı. Sürprize Kalan Süre:</p>
-    
-    <div id="countdown-units">
-        </div>
-</div>
 
 <div id="birthday-content">
     <h2>İYİ Kİ DOĞDUN AŞKIM ❤️</h2>
@@ -148,20 +97,9 @@
 </div>
 
 <script>
-    // **********************************************
-    // TEST TARİHİ: 24 Kasım 2025, 22:30:00 (TSİ)
-    // Ay JavaScript'te 0'dan (Ocak) başlar, 10 (Kasım) olarak yazıldı.
-    // **********************************************
-    const targetDate = new Date(2025, 10, 24, 21, 0, 0).getTime();
-
-    const countdownUnits = document.getElementById("countdown-units");
-    const birthdayContent = document.getElementById("birthday-content");
-    const countdownContainer = document.querySelector(".countdown-container");
-    const confettiArea = document.getElementById("confetti-area");
-    const messageElement = document.getElementById("message");
-
     // Konfeti parçacıklarını oluşturan fonksiyon
     function createConfetti() {
+        const confettiArea = document.getElementById("confetti-area");
         for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.classList.add('confetti');
@@ -171,37 +109,7 @@
             confettiArea.appendChild(confetti);
         }
     }
-
-    const x = setInterval(function() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        // Hesaplamalar
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Geri sayım değerlerini oluştur
-        countdownUnits.innerHTML = `
-            <div class="time-unit"><span class="time-value">${days}</span><span class="time-label">GÜN</span></div>
-            <div class="time-unit"><span class="time-value">${hours}</span><span class="time-label">SAAT</span></div>
-            <div class="time-unit"><span class="time-value">${minutes}</span><span class="time-label">DAKİKA</span></div>
-            <div class="time-unit"><span class="time-value">${seconds}</span><span class="time-label">SANİYE</span></div>
-        `;
-
-        // Geri sayım bittiğinde
-        if (distance < 0) {
-            clearInterval(x);
-            countdownContainer.style.display = 'none'; // Sayaç kutusunu gizle
-            birthdayContent.style.display = 'block'; // Mesaj ve fotoğrafları göster
-            document.title = "🎉 İYİ Kİ DOĞDUN! 🎉";
-            messageElement.innerHTML = "Sürpriz Açıldı!"; 
-            createConfetti(); // Konfeti yağmurunu başlat
-            
-            document.body.style.background = '#e91e63'; // Arka plan rengini değiştir
-        }
-    }, 1000);
+    // createConfetti fonksiyonu body tag'ine 'onload' olarak eklendi, böylece sayfa yüklenir yüklenmez çalışır.
 </script>
 
 </body>
