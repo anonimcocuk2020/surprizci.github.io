@@ -88,7 +88,7 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            margin: 10px 10px 0; /* Butonlar arası boşluk */
+            margin: 10px 10px 0; 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease;
             z-index: 10; 
@@ -99,7 +99,7 @@
 
         /* Partikül Butonu Stili */
         #specialActionButton {
-            background-color: #ff0000; /* Kırmızı */
+            background-color: #ff0000; 
             box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
         }
         #specialActionButton:hover {
@@ -108,7 +108,7 @@
 
         /* Müzik Butonu Stili */
         #musicButton {
-            background-color: #0080ff; /* Mavi */
+            background-color: #0080ff; 
             box-shadow: 0 4px 15px rgba(0, 128, 255, 0.6);
         }
         #musicButton:hover {
@@ -137,10 +137,12 @@
             <img src="ani2.jpeg" alt="Anımız 1 Kopyası"> 
         </div>
     </div>
-
-    <button id="musicButton" class="action-button" onclick="playMusic()">Müziği Başlat 🎧</button>
     
-    <button id="specialActionButton" class="action-button" onclick="startSpecialParticleRain()">Sürprizi Başlat! 🎉</button>
+    <div id="button-container">
+        <button id="musicButton" class="action-button" onclick="playMusic()">Müziği Başlat 🎧</button>
+        
+        <button id="specialActionButton" class="action-button" onclick="startSpecialParticleRain()">Sürprizi Başlat! 🎉</button>
+    </div>
 </div>
 
 <audio id="backgroundMusic" loop>
@@ -155,10 +157,9 @@
     let currentIndex = 0;
     let imageWidth = 500; 
     
-    // Müzik çalma durumunu tutmak için
     let musicPlaying = false; 
 
-    // SLAYT GÖSTERİSİ KODU (DEĞİŞMEDİ)
+    // SLAYT GÖSTERİSİ KODU
     function initSlider() {
         slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         setInterval(startSlider, 4000); 
@@ -184,27 +185,24 @@
         }
     }
     
-    // YENİ MÜZİK KONTROL KODU
+    // MÜZİK KONTROL KODU
     function playMusic() {
         const music = document.getElementById('backgroundMusic');
         const button = document.getElementById('musicButton');
         
         if (!musicPlaying) {
-            // Müzik başlatma
             music.play().then(() => {
                 button.textContent = 'Müzik Çalıyor 🎶';
                 button.disabled = true;
                 musicPlaying = true;
             }).catch(error => {
-                // Tarayıcı otomatik oynatmayı engellerse bu çalışır
                 button.textContent = 'Müzik Başlatılamadı 🚫';
                 console.error('Müzik başlatma hatası:', error);
             });
         }
     }
 
-
-    // SONSuz PARTİKÜL KODU (DEĞİŞMEDİ)
+    // PARTİKÜL KODU
     function createSingleParticle() {
         const particleArea = document.getElementById("particle-area");
         const particleTypes = ['❤️', 'A']; 
