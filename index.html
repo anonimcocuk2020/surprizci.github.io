@@ -23,14 +23,15 @@
         /* Özel Partikül Animasyonu (Kalp ve A Harfi) */
         @keyframes particle-fall {
             0% { transform: translateY(-100vh); opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
+            /* Partikülün düşüşünü sonlandırmayız, sürekli aşağı doğru akar */
+            100% { transform: translateY(100vh); opacity: 0.2; } 
         }
         .special-particle {
             position: absolute;
             font-size: 2em;
             color: #ff0000; 
             opacity: 0; 
-            animation: particle-fall 8s linear forwards; 
+            /* Animasyonu kaldırıyoruz, çünkü sürekli yenilerini oluşturacağız */
             z-index: 9999; 
             pointer-events: none; 
         }
@@ -160,30 +161,50 @@
             slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
     }
-
-    // Konfeti yerine özel partikül fonksiyonu (Kalpler ve A harfleri)
-    function startSpecialParticleRain() {
+    
+    // Tek bir partikül oluşturan yardımcı fonksiyon
+    function createSingleParticle() {
         const particleArea = document.getElementById("particle-area");
         const particleTypes = ['❤️', 'A']; 
+        
+        const particle = document.createElement('div');
+        particle.classList.add('special-particle');
+        
+        particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+        
+        particle.style.left = Math.random() * 100 + 'vw';
+        
+        // Düşme süresi, hızını belirler
+        const duration = (Math.random() * 5) + 5; 
+        
+        // Partiküle özel animasyonu atama
+        particle.style.animation = `particle-fall ${duration}s linear forwards`;
+        particle.style.opacity = 1; 
 
-        for (let i = 0; i < 70; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('special-particle');
-            
-            particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
-            
-            particle.style.left = Math.random() * 100 + 'vw';
-            
-            // BURADA DEĞİŞİKLİK YAPILDI: Gecikme süresi 0.0 ve 1.5 saniye arasına çekildi (daha önce 6 saniyeydi)
-            particle.style.animationDelay = Math.random() * 1.5 + 's'; 
-            
-            particle.style.animationDuration = (Math.random() * 5) + 5 + 's'; 
-            particle.style.opacity = 1; 
+        particleArea.appendChild(particle);
 
-            particleArea.appendChild(particle);
-        }
+        // Partikül ekrandan düştükten sonra (duration süresi + biraz fazlası) DOM'dan kaldır
+        setTimeout(() => {
+            particle.remove();
+        }, duration * 1000 + 500); 
+    }
+
+
+    // Sonsuz Partikül Yağmurunu Başlatan Ana Fonksiyon
+    function startSpecialParticleRain() {
+        // Fonksiyon sadece bir kez çalışacak
         document.getElementById('specialActionButton').disabled = true;
         document.getElementById('specialActionButton').textContent = 'Sürpriz Devam Ediyor! ✨';
+        
+        // Belirli aralıklarla (örneğin 100ms) yeni partikül grupları oluştur
+        setInterval(() => {
+            // Her döngüde 5-8 arasında rastgele sayıda partikül oluştur
+            const count = Math.floor(Math.random() * 4) + 5; 
+            for (let i = 0; i < count; i++) {
+                // Kısa bir gecikmeyle partikülleri arka arkaya ekle
+                setTimeout(createSingleParticle, i * 100); 
+            }
+        }, 800); // Her 0.8 saniyede bir yeni bir grup partikül yağmuru başlat
     }
 </script>
 
