@@ -64,7 +64,7 @@
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
             width: 100%; 
-            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ (Orantılı) */
+            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ */
             margin: 30px auto 0; 
             overflow: hidden; 
             border-radius: 15px;
@@ -76,8 +76,8 @@
             transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
         }
         .image-slider img {
-            width: 500px; /* Her bir resmin genişliği (slider-container max-width ile aynı) */
-            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ (Orantılı) */
+            width: 500px; /* Her bir resmin genişliği (max-width ile aynı) */
+            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ */
             object-fit: cover; /* Resmi keserek tam sığdırır */
             flex-shrink: 0; 
         }
@@ -94,11 +94,16 @@
     
     <div class="slider-container">
         <div class="image-slider" id="imageSlider">
-            <img src="foto1.png" alt="Anımız 1">
-            <img src="foto2.png" alt="Anımız 2">
-            <img src="foto3.png" alt="Anımız 3">
+            <img src="ani1.png" alt="Anımız 1">
+            <img src="ani2.png" alt="Anımız 2">
+            <img src="ani3.png" alt="Anımız 3">
+            <img src="ani4.png" alt="Anımız 4">
+            <img src="ani5.png" alt="Anımız 5">
+            <img src="ani6.png" alt="Anımız 6">
+            <img src="ani7.png" alt="Anımız 7">
+            <img src="ani8.png" alt="Anımız 8">
             
-            <img src="foto1.png" alt="Anımız 1 Kopyası">
+            <img src="ani1.png" alt="Anımız 1 Kopyası"> 
         </div>
     </div>
 </div>
@@ -106,7 +111,8 @@
 <script>
     const slider = document.getElementById('imageSlider');
     let images = slider.querySelectorAll('img');
-    let totalImages = images.length; 
+    const originalImageCount = images.length - 1; // Orjinal resim sayısı (kopya hariç)
+    let totalImages = images.length; // Toplam resim sayısı (kopya dahil)
     let currentIndex = 0;
     let imageWidth = 500; // Resimlerin sabit genişliği (CSS ile aynı olmalı)
 
@@ -114,14 +120,14 @@
         // İlk yüklemede doğru pozisyonu ayarla
         slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         // Slaytı başlat
-        setInterval(startSlider, 3000); 
+        setInterval(startSlider, 4000); // 4 saniyede bir geçiş
     }
 
     function startSlider() {
         currentIndex++; 
 
         if (currentIndex === totalImages) {
-            // Eğer son resme (kopya) ulaşıldıysa
+            // Eğer son resme (kopya ani1.png) ulaşıldıysa
             
             // 1. Normal kayma animasyonunu son resme (kopya) tamamla
             slider.style.transition = 'transform 0.8s ease-in-out'; // Geçişi aç
@@ -130,13 +136,13 @@
             // 2. Animasyon tamamlandıktan sonra (0.8 saniye sonra) başa sıçra
             setTimeout(() => {
                 slider.style.transition = 'none'; // Animasyonu kapat
-                currentIndex = 0; // Başa dön
+                currentIndex = 0; // Başa dön (ilk orijinal resme)
                 slider.style.transform = `translateX(0px)`; // Geri sıçra
 
-                // 3. Bir sonraki kayma için animasyonu tekrar aç
+                // 3. Çok kısa bir gecikme sonrası animasyonu tekrar aç
                 setTimeout(() => {
                     slider.style.transition = 'transform 0.8s ease-in-out';
-                }, 50); // Çok kısa bir gecikme
+                }, 50); 
             }, 800); // Kayma animasyonu süresi kadar bekle
 
         } else {
