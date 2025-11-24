@@ -8,7 +8,7 @@
         body { 
             text-align: center; 
             font-family: sans-serif; 
-            background: #e91e63; /* Direkt Doğum Günü Rengi (Kırmızımsı Pembe) */
+            background: #e91e63; /* Direkt Doğum Günü Rengi */
             color: #ffffff; 
             padding: 0;
             margin: 0;
@@ -64,7 +64,7 @@
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
             width: 100%; 
-            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ (Daha küçük) */
+            max-width: 500px; /* SLAYTIN MAKSİMUM GENİŞLİĞİ (Orantılı) */
             margin: 30px auto 0; 
             overflow: hidden; 
             border-radius: 15px;
@@ -74,11 +74,11 @@
         .image-slider {
             display: flex;
             width: fit-content; 
-            transition: transform 0.8s ease-in-out; 
+            transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
         }
         .image-slider img {
-            width: 500px; /* Her bir resmin genişliği (max-width ile aynı) */
-            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ (Daha küçük) */
+            width: 500px; /* Her bir resmin genişliği */
+            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ (Orantılı) */
             object-fit: cover; /* Resmi keserek tam sığdırır */
             flex-shrink: 0; 
         }
@@ -98,6 +98,8 @@
             <img src="foto1.png" alt="Anımız 1">
             <img src="foto2.png" alt="Anımız 2">
             <img src="foto3.png" alt="Anımız 3">
+            
+            <img src="foto1.png" alt="Anımız 1 Kopyası">
         </div>
     </div>
 </div>
@@ -105,14 +107,36 @@
 <script>
     const slider = document.getElementById('imageSlider');
     const images = slider.querySelectorAll('img');
-    const totalImages = images.length;
+    const totalImages = images.length; // Şimdi 4 (3 ana + 1 kopya)
     let currentIndex = 0;
 
     function startSlider() {
-        // Döngüsel kayma işlevi
-        currentIndex = (currentIndex + 1) % totalImages;
-        const offset = -currentIndex * 100; 
-        slider.style.transform = `translateX(${offset}%)`;
+        currentIndex++; // İndeksi artır
+
+        if (currentIndex === totalImages) {
+            // Eğer son resme (kopya foto1.png) ulaşıldıysa
+            
+            // 1. Normal kayma animasyonunu son resme (kopya) tamamla
+            const offset = -currentIndex * 100; 
+            slider.style.transform = `translateX(${offset}%)`;
+            
+            // 2. Animasyon tamamlandıktan sonra (0.8 saniye sonra) başa sıçra
+            setTimeout(() => {
+                slider.style.transition = 'none'; // Animasyonu kapat
+                currentIndex = 0; // Başa dön
+                slider.style.transform = 'translateX(0%)'; // Geri sıçra
+
+                // 3. Bir sonraki kayma için animasyonu tekrar aç
+                setTimeout(() => {
+                    slider.style.transition = 'transform 0.8s ease-in-out';
+                }, 50); // Çok kısa bir gecikme
+            }, 800); // Kayma animasyonu süresi kadar bekle
+
+        } else {
+            // Normal kayma
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+        }
     }
 
     // 3 saniyede bir kaymayı başlat
