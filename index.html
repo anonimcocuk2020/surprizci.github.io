@@ -63,24 +63,24 @@
         
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
-            width: 100%; /* İçeriği dolduracak */
-            max-width: 500px; /* SLAYT GÖSTERİSİNİN MAKSİMUM GENİŞLİĞİ */
-            margin: 30px auto 0; /* Ortalar ve üst boşluk bırakır */
-            overflow: hidden; /* Taşmayı gizler */
+            width: 100%; 
+            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ (Daha küçük) */
+            margin: 30px auto 0; 
+            overflow: hidden; 
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             border: 3px solid #ffcc00;
         }
         .image-slider {
             display: flex;
-            width: fit-content; /* Resimlerin toplam genişliğini kapsar */
-            transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
+            width: fit-content; 
+            transition: transform 0.8s ease-in-out; 
         }
         .image-slider img {
             width: 500px; /* Her bir resmin genişliği (max-width ile aynı) */
-            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ */
+            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ (Daha küçük) */
             object-fit: cover; /* Resmi keserek tam sığdırır */
-            flex-shrink: 0; /* Resmin küçülmesini engeller */
+            flex-shrink: 0; 
         }
     </style>
 </head>
@@ -98,7 +98,7 @@
             <img src="foto1.png" alt="Anımız 1">
             <img src="foto2.png" alt="Anımız 2">
             <img src="foto3.png" alt="Anımız 3">
-            </div>
+        </div>
     </div>
 </div>
 
@@ -109,8 +109,9 @@
     let currentIndex = 0;
 
     function startSlider() {
+        // Döngüsel kayma işlevi
         currentIndex = (currentIndex + 1) % totalImages;
-        const offset = -currentIndex * 100; // Resimlerin %'lik kayma miktarı
+        const offset = -currentIndex * 100; 
         slider.style.transform = `translateX(${offset}%)`;
     }
 
