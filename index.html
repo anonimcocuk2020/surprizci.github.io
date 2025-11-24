@@ -43,7 +43,7 @@
             padding: 30px;
             background: rgba(0, 0, 0, 0.6);
             border-radius: 15px;
-            max-width: 800px; 
+            max-width: 800px; /* Mesaj kutusu genişliği */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             border: 2px solid #00ffaa;
             z-index: 10;
@@ -64,7 +64,7 @@
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
             width: 100%; /* İçeriği dolduracak */
-            max-width: 600px; /* Slaytın maksimum genişliği */
+            max-width: 500px; /* SLAYT GÖSTERİSİNİN MAKSİMUM GENİŞLİĞİ */
             margin: 30px auto 0; /* Ortalar ve üst boşluk bırakır */
             overflow: hidden; /* Taşmayı gizler */
             border-radius: 15px;
@@ -77,8 +77,8 @@
             transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
         }
         .image-slider img {
-            width: 600px; /* Her bir resmin genişliği (max-width ile aynı) */
-            height: 400px; /* Sabit yükseklik ayarladık */
+            width: 500px; /* Her bir resmin genişliği (max-width ile aynı) */
+            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ */
             object-fit: cover; /* Resmi keserek tam sığdırır */
             flex-shrink: 0; /* Resmin küçülmesini engeller */
         }
@@ -95,9 +95,9 @@
     
     <div class="slider-container">
         <div class="image-slider" id="imageSlider">
-            <img src="foto1.jpg" alt="Rakun 1">
-            <img src="foto2.jpg" alt="Rakun 2">
-            <img src="foto3.jpg" alt="Rakun 3">
+            <img src="foto1.jpg" alt="Anımız 1">
+            <img src="foto2.jpg" alt="Anımız 2">
+            <img src="foto3.jpg" alt="Anımız 3">
             </div>
     </div>
 </div>
@@ -108,12 +108,9 @@
     const totalImages = images.length;
     let currentIndex = 0;
 
-    // Fotoğraf adlarını alarak bir dizi oluşturun (varsayılan: ani1.jpg, ani2.jpg, ani3.jpg)
-    const imageNames = Array.from(images).map(img => img.src.split('/').pop());
-
     function startSlider() {
         currentIndex = (currentIndex + 1) % totalImages;
-        const offset = -currentIndex * 100;
+        const offset = -currentIndex * 100; // Resimlerin %'lik kayma miktarı
         slider.style.transform = `translateX(${offset}%)`;
     }
 
