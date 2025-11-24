@@ -7,8 +7,8 @@
         /* Ana Stil */
         body { 
             text-align: center; 
-            font-family: sans-serif; /* Poppins kullanılamıyorsa varsayılan font */
-            background: linear-gradient(135deg, #1c0030 0%, #000000 100%); /* Mor/Siyah Gradient */
+            font-family: sans-serif; 
+            background: linear-gradient(135deg, #1c0030 0%, #000000 100%); 
             color: #ffffff; 
             padding: 0;
             margin: 0;
@@ -33,6 +33,7 @@
             border-radius: 50%;
             opacity: 0;
             animation: confetti-fall 8s linear infinite;
+            z-index: 9999; /* Konfetilerin en önde olması için */
         }
 
         /* Geri Sayım Kutusu */
@@ -58,24 +59,47 @@
             margin-bottom: 20px;
         }
 
-        /* Doğum Günü Mesajı Alanı */
+        /* Doğum Günü Mesajı ve Fotoğraf Alanı (Sayaç Bitince Görünür Olur) */
         #birthday-content {
             display: none; 
             margin-top: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            max-width: 600px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            max-width: 800px; /* Daha geniş bir alan */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffaa;
+            z-index: 10;
         }
         #birthday-content h2 {
             color: #00ffaa; 
-            font-size: 3em;
-            margin-bottom: 10px;
+            font-size: 3.5em; /* Daha büyük başlık */
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 255, 170, 0.7);
         }
         #birthday-content p {
-            font-size: 1.5em;
+            font-size: 1.6em; /* Daha büyük metin */
             color: #ffffff;
-            line-height: 1.5;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .photo-gallery {
+            display: flex; /* Fotoğrafları yan yana dizer */
+            flex-wrap: wrap; /* Taşarsa alta geçirir */
+            justify-content: center;
+            gap: 20px; /* Fotoğraflar arası boşluk */
+            margin-top: 30px;
+        }
+        .photo-gallery img {
+            max-width: 220px; /* Fotoğraf boyutu */
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #ffcc00; /* Sarı çerçeve */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .photo-gallery img:hover {
+            transform: scale(1.05); /* Üzerine gelince büyüme efekti */
         }
 
         /* Sayılar için Kutular */
@@ -115,6 +139,12 @@
     <h2>İYİ Kİ DOĞDUN AŞKIM ❤️</h2>
     <p>Bu siteyi sana özel olarak, en güzel anılarımızı kutlamak için hazırladım. Yeni yaşın sana mutluluk, başarı ve bolca kahkaha getirsin!</p>
     <p>**Seni çok seviyorum! Nice Mutlu Yıllara!**</p>
+    
+    <div class="photo-gallery">
+        <img src="foto1.jpg" alt="Anımız 1">
+        <img src="foto2.jpg" alt="Anımız 2">
+        <img src="foto3.jpg" alt="Anımız 3">
+        </div>
 </div>
 
 <script>
@@ -166,7 +196,7 @@
             countdownContainer.style.display = 'none'; // Sayaç kutusunu gizle
             birthdayContent.style.display = 'block'; // Mesaj kutusunu göster
             document.title = "🎉 İYİ Kİ DOĞDUN! 🎉";
-            messageElement.innerHTML = "Sürpriz Açıldı!"; // Geri sayım mesajını güncelle
+            messageElement.innerHTML = "Sürpriz Açıldı!"; 
             createConfetti(); // Konfeti yağmurunu başlat
             
             document.body.style.background = '#e91e63'; 
