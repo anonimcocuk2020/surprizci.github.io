@@ -8,7 +8,7 @@
         body { 
             text-align: center; 
             font-family: sans-serif; 
-            background: #e91e63; /* Direkt Doğum Günü Rengi */
+            background: #e91e63;
             color: #ffffff; 
             padding: 0;
             margin: 0;
@@ -27,12 +27,12 @@
         }
         .special-particle {
             position: absolute;
-            font-size: 2em; /* Boyutunu ayarlayın */
-            color: #ff0000; /* Kırmızı renk */
-            opacity: 0; /* Başlangıçta gizli */
-            animation: particle-fall 8s linear forwards; /* Butona basıldığında başlayacak */
+            font-size: 2em;
+            color: #ff0000; 
+            opacity: 0; 
+            animation: particle-fall 8s linear forwards; 
             z-index: 9999; 
-            pointer-events: none; /* Üzerine tıklanmasını engeller */
+            pointer-events: none; 
         }
 
         /* Doğum Günü Mesajı ve Slayt Alanı */
@@ -83,7 +83,7 @@
 
         /* Buton Stili */
         #specialActionButton {
-            background-color: #ff0000; /* Kırmızı Buton */
+            background-color: #ff0000; 
             color: white;
             padding: 15px 30px;
             font-size: 1.5em;
@@ -93,7 +93,7 @@
             margin-top: 20px;
             box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
             transition: background-color 0.3s ease, transform 0.2s ease;
-            z-index: 10; /* Diğer elementlerin üzerinde olması için */
+            z-index: 10; 
         }
         #specialActionButton:hover {
             background-color: #cc0000;
@@ -129,7 +129,6 @@
 <script>
     const slider = document.getElementById('imageSlider');
     let images = slider.querySelectorAll('img');
-    const originalImageCount = images.length - 1; 
     let totalImages = images.length; 
     let currentIndex = 0;
     let imageWidth = 500; 
@@ -165,23 +164,24 @@
     // Konfeti yerine özel partikül fonksiyonu (Kalpler ve A harfleri)
     function startSpecialParticleRain() {
         const particleArea = document.getElementById("particle-area");
-        const particleTypes = ['❤️', 'A']; // Partikül tipleri
+        const particleTypes = ['❤️', 'A']; 
 
-        for (let i = 0; i < 70; i++) { // Daha fazla partikül için sayıyı artırdım
+        for (let i = 0; i < 70; i++) {
             const particle = document.createElement('div');
             particle.classList.add('special-particle');
             
-            // Random partikül tipi seçimi
             particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
             
             particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDelay = Math.random() * 6 + 's'; // Delay süresini ayarladım
-            particle.style.animationDuration = (Math.random() * 5) + 5 + 's'; // Düşme süresi
-            particle.style.opacity = 1; // Başlar başlamaz görünür olsun
+            
+            // BURADA DEĞİŞİKLİK YAPILDI: Gecikme süresi 0.0 ve 1.5 saniye arasına çekildi (daha önce 6 saniyeydi)
+            particle.style.animationDelay = Math.random() * 1.5 + 's'; 
+            
+            particle.style.animationDuration = (Math.random() * 5) + 5 + 's'; 
+            particle.style.opacity = 1; 
 
             particleArea.appendChild(particle);
         }
-        // Butonu devre dışı bırak, tekrar basılmasın
         document.getElementById('specialActionButton').disabled = true;
         document.getElementById('specialActionButton').textContent = 'Sürpriz Devam Ediyor! ✨';
     }
