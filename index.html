@@ -23,7 +23,6 @@
         /* Özel Partikül Animasyonu (Kalp ve A Harfi) */
         @keyframes particle-fall {
             0% { transform: translateY(-100vh); opacity: 1; }
-            /* Partikülün düşüşünü sonlandırmayız, sürekli aşağı doğru akar */
             100% { transform: translateY(100vh); opacity: 0.2; } 
         }
         .special-particle {
@@ -31,7 +30,6 @@
             font-size: 2em;
             color: #ff0000; 
             opacity: 0; 
-            /* Animasyonu kaldırıyoruz, çünkü sürekli yenilerini oluşturacağız */
             z-index: 9999; 
             pointer-events: none; 
         }
@@ -82,23 +80,39 @@
             flex-shrink: 0; 
         }
 
-        /* Buton Stili */
-        #specialActionButton {
-            background-color: #ff0000; 
+        /* Butonlar için ortak stil */
+        .action-button {
             color: white;
             padding: 15px 30px;
             font-size: 1.5em;
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 10px 10px 0; /* Butonlar arası boşluk */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
             z-index: 10; 
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Partikül Butonu Stili */
+        #specialActionButton {
+            background-color: #ff0000; /* Kırmızı */
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
         }
         #specialActionButton:hover {
             background-color: #cc0000;
-            transform: translateY(-2px);
+        }
+
+        /* Müzik Butonu Stili */
+        #musicButton {
+            background-color: #0080ff; /* Mavi */
+            box-shadow: 0 4px 15px rgba(0, 128, 255, 0.6);
+        }
+        #musicButton:hover {
+            background-color: #0066cc;
         }
     </style>
 </head>
@@ -124,8 +138,15 @@
         </div>
     </div>
 
-    <button id="specialActionButton" onclick="startSpecialParticleRain()">Sürprizi Başlat! 🎉</button>
+    <button id="musicButton" class="action-button" onclick="playMusic()">Müziği Başlat 🎧</button>
+    
+    <button id="specialActionButton" class="action-button" onclick="startSpecialParticleRain()">Sürprizi Başlat! 🎉</button>
 </div>
+
+<audio id="backgroundMusic" loop>
+    <source src="ses1.mp3" type="audio/mpeg">
+    Tarayıcınız ses öğesini desteklemiyor.
+</audio>
 
 <script>
     const slider = document.getElementById('imageSlider');
@@ -133,7 +154,11 @@
     let totalImages = images.length; 
     let currentIndex = 0;
     let imageWidth = 500; 
+    
+    // Müzik çalma durumunu tutmak için
+    let musicPlaying = false; 
 
+    // SLAYT GÖSTERİSİ KODU (DEĞİŞMEDİ)
     function initSlider() {
         slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         setInterval(startSlider, 4000); 
@@ -141,7 +166,6 @@
 
     function startSlider() {
         currentIndex++; 
-
         if (currentIndex === totalImages) {
             slider.style.transition = 'transform 0.8s ease-in-out';
             slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
@@ -150,61 +174,67 @@
                 slider.style.transition = 'none';
                 currentIndex = 0; 
                 slider.style.transform = `translateX(0px)`;
-
                 setTimeout(() => {
                     slider.style.transition = 'transform 0.8s ease-in-out';
                 }, 50); 
             }, 800); 
-
         } else {
             slider.style.transition = 'transform 0.8s ease-in-out';
             slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
     }
     
-    // Tek bir partikül oluşturan yardımcı fonksiyon
+    // YENİ MÜZİK KONTROL KODU
+    function playMusic() {
+        const music = document.getElementById('backgroundMusic');
+        const button = document.getElementById('musicButton');
+        
+        if (!musicPlaying) {
+            // Müzik başlatma
+            music.play().then(() => {
+                button.textContent = 'Müzik Çalıyor 🎶';
+                button.disabled = true;
+                musicPlaying = true;
+            }).catch(error => {
+                // Tarayıcı otomatik oynatmayı engellerse bu çalışır
+                button.textContent = 'Müzik Başlatılamadı 🚫';
+                console.error('Müzik başlatma hatası:', error);
+            });
+        }
+    }
+
+
+    // SONSuz PARTİKÜL KODU (DEĞİŞMEDİ)
     function createSingleParticle() {
         const particleArea = document.getElementById("particle-area");
         const particleTypes = ['❤️', 'A']; 
         
         const particle = document.createElement('div');
         particle.classList.add('special-particle');
-        
         particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
-        
         particle.style.left = Math.random() * 100 + 'vw';
         
-        // Düşme süresi, hızını belirler
         const duration = (Math.random() * 5) + 5; 
-        
-        // Partiküle özel animasyonu atama
         particle.style.animation = `particle-fall ${duration}s linear forwards`;
         particle.style.opacity = 1; 
 
         particleArea.appendChild(particle);
 
-        // Partikül ekrandan düştükten sonra (duration süresi + biraz fazlası) DOM'dan kaldır
         setTimeout(() => {
             particle.remove();
         }, duration * 1000 + 500); 
     }
 
-
-    // Sonsuz Partikül Yağmurunu Başlatan Ana Fonksiyon
     function startSpecialParticleRain() {
-        // Fonksiyon sadece bir kez çalışacak
         document.getElementById('specialActionButton').disabled = true;
         document.getElementById('specialActionButton').textContent = 'Sürpriz Devam Ediyor! ✨';
         
-        // Belirli aralıklarla (örneğin 100ms) yeni partikül grupları oluştur
         setInterval(() => {
-            // Her döngüde 5-8 arasında rastgele sayıda partikül oluştur
             const count = Math.floor(Math.random() * 4) + 5; 
             for (let i = 0; i < count; i++) {
-                // Kısa bir gecikmeyle partikülleri arka arkaya ekle
                 setTimeout(createSingleParticle, i * 100); 
             }
-        }, 800); // Her 0.8 saniyede bir yeni bir grup partikül yağmuru başlat
+        }, 800); 
     }
 </script>
 
