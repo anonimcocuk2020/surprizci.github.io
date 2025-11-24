@@ -64,7 +64,7 @@
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
             width: 100%; 
-            max-width: 500px; /* SLAYTIN MAKSİMUM GENİŞLİĞİ (Orantılı) */
+            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ (Orantılı) */
             margin: 30px auto 0; 
             overflow: hidden; 
             border-radius: 15px;
@@ -73,18 +73,17 @@
         }
         .image-slider {
             display: flex;
-            width: fit-content; 
             transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
         }
         .image-slider img {
-            width: 500px; /* Her bir resmin genişliği */
+            width: 500px; /* Her bir resmin genişliği (slider-container max-width ile aynı) */
             height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ (Orantılı) */
             object-fit: cover; /* Resmi keserek tam sığdırır */
             flex-shrink: 0; 
         }
     </style>
 </head>
-<body onload="createConfetti()">
+<body onload="createConfetti(); initSlider();">
 
 <div id="confetti-area"></div>
 
@@ -106,25 +105,33 @@
 
 <script>
     const slider = document.getElementById('imageSlider');
-    const images = slider.querySelectorAll('img');
-    const totalImages = images.length; // Şimdi 4 (3 ana + 1 kopya)
+    let images = slider.querySelectorAll('img');
+    let totalImages = images.length; 
     let currentIndex = 0;
+    let imageWidth = 500; // Resimlerin sabit genişliği (CSS ile aynı olmalı)
+
+    function initSlider() {
+        // İlk yüklemede doğru pozisyonu ayarla
+        slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
+        // Slaytı başlat
+        setInterval(startSlider, 3000); 
+    }
 
     function startSlider() {
-        currentIndex++; // İndeksi artır
+        currentIndex++; 
 
         if (currentIndex === totalImages) {
-            // Eğer son resme (kopya foto1.png) ulaşıldıysa
+            // Eğer son resme (kopya) ulaşıldıysa
             
             // 1. Normal kayma animasyonunu son resme (kopya) tamamla
-            const offset = -currentIndex * 100; 
-            slider.style.transform = `translateX(${offset}%)`;
+            slider.style.transition = 'transform 0.8s ease-in-out'; // Geçişi aç
+            slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
             
             // 2. Animasyon tamamlandıktan sonra (0.8 saniye sonra) başa sıçra
             setTimeout(() => {
                 slider.style.transition = 'none'; // Animasyonu kapat
                 currentIndex = 0; // Başa dön
-                slider.style.transform = 'translateX(0%)'; // Geri sıçra
+                slider.style.transform = `translateX(0px)`; // Geri sıçra
 
                 // 3. Bir sonraki kayma için animasyonu tekrar aç
                 setTimeout(() => {
@@ -134,13 +141,10 @@
 
         } else {
             // Normal kayma
-            const offset = -currentIndex * 100;
-            slider.style.transform = `translateX(${offset}%)`;
+            slider.style.transition = 'transform 0.8s ease-in-out'; // Geçişi aç
+            slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
     }
-
-    // 3 saniyede bir kaymayı başlat
-    setInterval(startSlider, 3000); 
 
     // Konfeti parçacıklarını oluşturan fonksiyon
     function createConfetti() {
