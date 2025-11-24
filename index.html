@@ -20,20 +20,19 @@
             min-height: 100vh;
         }
 
-        /* Konfeti Animasyonu */
-        @keyframes confetti-fall {
+        /* Özel Partikül Animasyonu (Kalp ve A Harfi) */
+        @keyframes particle-fall {
             0% { transform: translateY(-100vh); opacity: 1; }
             100% { transform: translateY(100vh); opacity: 0; }
         }
-        .confetti {
+        .special-particle {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ffcc00; 
-            border-radius: 50%;
-            opacity: 1; 
-            animation: confetti-fall 8s linear infinite;
+            font-size: 2em; /* Boyutunu ayarlayın */
+            color: #ff0000; /* Kırmızı renk */
+            opacity: 0; /* Başlangıçta gizli */
+            animation: particle-fall 8s linear forwards; /* Butona basıldığında başlayacak */
             z-index: 9999; 
+            pointer-events: none; /* Üzerine tıklanmasını engeller */
         }
 
         /* Doğum Günü Mesajı ve Slayt Alanı */
@@ -43,7 +42,7 @@
             padding: 30px;
             background: rgba(0, 0, 0, 0.6);
             border-radius: 15px;
-            max-width: 800px; /* Mesaj kutusu genişliği */
+            max-width: 800px; 
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             border: 2px solid #00ffaa;
             z-index: 10;
@@ -64,7 +63,7 @@
         /* SLAYT GÖSTERİSİ STİLLERİ */
         .slider-container {
             width: 100%; 
-            max-width: 500px; /* Slaytın MAKSİMUM GENİŞLİĞİ */
+            max-width: 500px; 
             margin: 30px auto 0; 
             overflow: hidden; 
             border-radius: 15px;
@@ -73,19 +72,38 @@
         }
         .image-slider {
             display: flex;
-            transition: transform 0.8s ease-in-out; /* Kayma animasyonu hızı */
+            transition: transform 0.8s ease-in-out; 
         }
         .image-slider img {
-            width: 500px; /* Her bir resmin genişliği (max-width ile aynı) */
-            height: 300px; /* RESİMLERİN SABİT YÜKSEKLİĞİ */
-            object-fit: cover; /* Resmi keserek tam sığdırır */
+            width: 500px; 
+            height: 300px; 
+            object-fit: cover; 
             flex-shrink: 0; 
+        }
+
+        /* Buton Stili */
+        #specialActionButton {
+            background-color: #ff0000; /* Kırmızı Buton */
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 10; /* Diğer elementlerin üzerinde olması için */
+        }
+        #specialActionButton:hover {
+            background-color: #cc0000;
+            transform: translateY(-2px);
         }
     </style>
 </head>
-<body onload="createConfetti(); initSlider();">
+<body onload="initSlider();">
 
-<div id="confetti-area"></div>
+<div id="particle-area"></div>
 
 <div id="birthday-content">
     <h2>İYİ Kİ DOĞDUN AŞKIM ❤️</h2>
@@ -104,63 +122,68 @@
             <img src="ani2.jpeg" alt="Anımız 1 Kopyası"> 
         </div>
     </div>
+
+    <button id="specialActionButton" onclick="startSpecialParticleRain()">Sürprizi Başlat! 🎉</button>
 </div>
 
 <script>
     const slider = document.getElementById('imageSlider');
     let images = slider.querySelectorAll('img');
-    const originalImageCount = images.length - 1; // Orjinal resim sayısı (kopya hariç)
-    let totalImages = images.length; // Toplam resim sayısı (kopya dahil)
+    const originalImageCount = images.length - 1; 
+    let totalImages = images.length; 
     let currentIndex = 0;
-    let imageWidth = 500; // Resimlerin sabit genişliği (CSS ile aynı olmalı)
+    let imageWidth = 500; 
 
     function initSlider() {
-        // İlk yüklemede doğru pozisyonu ayarla
         slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
-        // Slaytı başlat
-        setInterval(startSlider, 4000); // 4 saniyede bir geçiş
+        setInterval(startSlider, 4000); 
     }
 
     function startSlider() {
         currentIndex++; 
 
         if (currentIndex === totalImages) {
-            // Eğer son resme (kopya ani1.png) ulaşıldıysa
-            
-            // 1. Normal kayma animasyonunu son resme (kopya) tamamla
-            slider.style.transition = 'transform 0.8s ease-in-out'; // Geçişi aç
+            slider.style.transition = 'transform 0.8s ease-in-out';
             slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
             
-            // 2. Animasyon tamamlandıktan sonra (0.8 saniye sonra) başa sıçra
             setTimeout(() => {
-                slider.style.transition = 'none'; // Animasyonu kapat
-                currentIndex = 0; // Başa dön (ilk orijinal resme)
-                slider.style.transform = `translateX(0px)`; // Geri sıçra
+                slider.style.transition = 'none';
+                currentIndex = 0; 
+                slider.style.transform = `translateX(0px)`;
 
-                // 3. Çok kısa bir gecikme sonrası animasyonu tekrar aç
                 setTimeout(() => {
                     slider.style.transition = 'transform 0.8s ease-in-out';
                 }, 50); 
-            }, 800); // Kayma animasyonu süresi kadar bekle
+            }, 800); 
 
         } else {
-            // Normal kayma
-            slider.style.transition = 'transform 0.8s ease-in-out'; // Geçişi aç
+            slider.style.transition = 'transform 0.8s ease-in-out';
             slider.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
     }
 
-    // Konfeti parçacıklarını oluşturan fonksiyon
-    function createConfetti() {
-        const confettiArea = document.getElementById("confetti-area");
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.animationDelay = Math.random() * 8 + 's';
-            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            confettiArea.appendChild(confetti);
+    // Konfeti yerine özel partikül fonksiyonu (Kalpler ve A harfleri)
+    function startSpecialParticleRain() {
+        const particleArea = document.getElementById("particle-area");
+        const particleTypes = ['❤️', 'A']; // Partikül tipleri
+
+        for (let i = 0; i < 70; i++) { // Daha fazla partikül için sayıyı artırdım
+            const particle = document.createElement('div');
+            particle.classList.add('special-particle');
+            
+            // Random partikül tipi seçimi
+            particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 6 + 's'; // Delay süresini ayarladım
+            particle.style.animationDuration = (Math.random() * 5) + 5 + 's'; // Düşme süresi
+            particle.style.opacity = 1; // Başlar başlamaz görünür olsun
+
+            particleArea.appendChild(particle);
         }
+        // Butonu devre dışı bırak, tekrar basılmasın
+        document.getElementById('specialActionButton').disabled = true;
+        document.getElementById('specialActionButton').textContent = 'Sürpriz Devam Ediyor! ✨';
     }
 </script>
 
